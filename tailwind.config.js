@@ -15,7 +15,15 @@ export default {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
-        },
+            colors: {
+                retro: {
+                    purple: "#4D2B8C",
+                    pink: "#85409D",
+                    orange: "#EEA727",
+                    yellow: "#FFEF5F"
+                },
+            }
+        }
     },
 
     plugins: [forms],
