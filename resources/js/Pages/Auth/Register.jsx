@@ -25,96 +25,100 @@ export default function Register() {
         <GuestLayout>
             <Head title="Register" />
 
-            <form onSubmit={submit}>
-                <div>
-                    <InputLabel htmlFor="name" value="Name" />
+            <div className='border border-solid rounded-xl py-6 bg-retro-pink'>
+                <h1 className='font-bold text-4xl sm:text-6xl lg:text-8xl text-center mb-4  text-retro-orange'>Register!</h1>
 
-                    <TextInput
-                        id="name"
-                        name="name"
-                        value={data.name}
-                        className="mt-1 block w-full"
-                        autoComplete="name"
-                        isFocused={true}
-                        onChange={(e) => setData('name', e.target.value)}
-                        required
-                    />
+                <form onSubmit={submit}  className='w-[90%] sm:w-[60%] lg:w-[40%] mx-auto'>
+                    <div>
+                        <InputLabel htmlFor="name" value="Name" />
 
-                    <InputError message={errors.name} className="mt-2" />
-                </div>
+                        <TextInput
+                            id="name"
+                            name="name"
+                            value={data.name}
+                            className="mt-1 block w-full"
+                            autoComplete="name"
+                            isFocused={true}
+                            onChange={(e) => setData('name', e.target.value)}
+                            required
+                        />
 
-                <div className="mt-4">
-                    <InputLabel htmlFor="email" value="Email" />
+                        <InputError message={errors.name} className="mt-2" />
+                    </div>
 
-                    <TextInput
-                        id="email"
-                        type="email"
-                        name="email"
-                        value={data.email}
-                        className="mt-1 block w-full"
-                        autoComplete="username"
-                        onChange={(e) => setData('email', e.target.value)}
-                        required
-                    />
+                    <div className="mt-4">
+                        <InputLabel htmlFor="email" value="Email" />
 
-                    <InputError message={errors.email} className="mt-2" />
-                </div>
+                        <TextInput
+                            id="email"
+                            type="email"
+                            name="email"
+                            value={data.email}
+                            className="mt-1 block w-full"
+                            autoComplete="username"
+                            onChange={(e) => setData('email', e.target.value)}
+                            required
+                        />
 
-                <div className="mt-4">
-                    <InputLabel htmlFor="password" value="Password" />
+                        <InputError message={errors.email} className="mt-2" />
+                    </div>
 
-                    <TextInput
-                        id="password"
-                        type="password"
-                        name="password"
-                        value={data.password}
-                        className="mt-1 block w-full"
-                        autoComplete="new-password"
-                        onChange={(e) => setData('password', e.target.value)}
-                        required
-                    />
+                    <div className="mt-4">
+                        <InputLabel htmlFor="password" value="Password" />
 
-                    <InputError message={errors.password} className="mt-2" />
-                </div>
+                        <TextInput
+                            id="password"
+                            type="password"
+                            name="password"
+                            value={data.password}
+                            className="mt-1 block w-full"
+                            autoComplete="new-password"
+                            onChange={(e) => setData('password', e.target.value)}
+                            required
+                        />
 
-                <div className="mt-4">
-                    <InputLabel
-                        htmlFor="password_confirmation"
-                        value="Confirm Password"
-                    />
+                        <InputError message={errors.password} className="mt-2" />
+                    </div>
 
-                    <TextInput
-                        id="password_confirmation"
-                        type="password"
-                        name="password_confirmation"
-                        value={data.password_confirmation}
-                        className="mt-1 block w-full"
-                        autoComplete="new-password"
-                        onChange={(e) =>
-                            setData('password_confirmation', e.target.value)
-                        }
-                        required
-                    />
+                    <div className="mt-4">
+                        <InputLabel
+                            htmlFor="password_confirmation"
+                            value="Confirm Password"
+                        />
 
-                    <InputError
-                        message={errors.password_confirmation}
-                        className="mt-2"
-                    />
-                </div>
+                        <TextInput
+                            id="password_confirmation"
+                            type="password"
+                            name="password_confirmation"
+                            value={data.password_confirmation}
+                            className="mt-1 block w-full"
+                            autoComplete="new-password"
+                            onChange={(e) =>
+                                setData('password_confirmation', e.target.value)
+                            }
+                            required
+                        />
 
-                <div className="mt-4 flex items-center justify-end">
-                    <Link
-                        href={route('login')}
-                        className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:text-gray-400 dark:hover:text-gray-100 dark:focus:ring-offset-gray-800"
-                    >
-                        Already registered?
-                    </Link>
+                        <InputError
+                            message={errors.password_confirmation}
+                            className="mt-2"
+                        />
+                    </div>
 
-                    <PrimaryButton className="ms-4" disabled={processing}>
-                        Register
-                    </PrimaryButton>
-                </div>
-            </form>
+                    <div className="mt-4 flex items-center justify-end">
+                        <Link
+                            href={route('login')}
+                            className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:text-gray-400 dark:hover:text-gray-100 dark:focus:ring-offset-gray-800"
+                        >
+                            Already registered?
+                        </Link>
+
+                        <PrimaryButton className="ms-4" disabled={processing}>
+                            Register
+                        </PrimaryButton>
+                    </div>
+                </form>
+            </div>
         </GuestLayout>
     );
 }

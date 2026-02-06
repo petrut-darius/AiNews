@@ -14,7 +14,7 @@ Route::get('/', function () {
         "layout" => $layout,
         "appName" => config("app.name"),
     ]);
-});
+})->name("home");
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
