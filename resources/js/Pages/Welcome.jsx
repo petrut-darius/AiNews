@@ -1,7 +1,7 @@
 import NavLink from '@/Components/NavLink';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import GuestLayout from '@/Layouts/GuestLayout';
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, usePage } from '@inertiajs/react';
 
 
 export default function Welcome(props) {
@@ -52,7 +52,9 @@ export default function Welcome(props) {
 
 //page se refera la Welcome
 Welcome.layout = (page) => {
-    if(page.props.layout === "auth") {
+    const {auth} = page.props;
+
+    if(auth?.user) {
         return <AuthenticatedLayout>{page}</AuthenticatedLayout>
     }
 

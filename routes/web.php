@@ -1,9 +1,14 @@
 <?php
 
+use App\Http\Controllers\ArticlesController;
+use App\Http\Controllers\CheckOutController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Laravel\Cashier\Cashier;
+use Laravel\Cashier\Http\Controllers\WebhookController;
+use Psy\ManualUpdater\Checker;
 
 Route::get('/', function () {
     $layout = (Auth::check() ? "auth" : "guest");
@@ -16,14 +21,19 @@ Route::get('/', function () {
     ]);
 })->name("home");
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get("/articles", ArticlesController::class)->name("articles.index");
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::get("/premium", [CheckOutController::class, "index"])->name("checkout.index");
+    Route::post("/checkout", [CheckOutController::class, "store"])->name("checkout.store");
 });
+
+
+Route::post('/webhooks/stripe', [WebhookController::class, 'handleWebhook'])
+    ->withoutMiddleware(['web', 'auth']);
 
 require __DIR__.'/auth.php';

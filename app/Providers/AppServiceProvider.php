@@ -11,6 +11,8 @@ use App\Services\TowardsDataScienceScraper;
 use App\Services\VentureBeatScraper;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Cashier\Cashier;
+use App\Models\User;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -31,6 +33,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Cashier::useCustomerModel(User::class);
+
         Vite::prefetch(concurrency: 3);
     }
 }

@@ -19,7 +19,7 @@ export default function GuestLayout({ children }) {
                     </div>
                 </nav>
             </div>
-            <main className='mx-[15%] mt-16'>
+            <main className='mx-[15%] my-16'>
                 {children}
             </main>
             <footer className='text-center bg-retro-purple text-white pt-8 pb-16'>

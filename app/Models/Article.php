@@ -9,4 +9,13 @@ class Article extends Model
 {
     /** @use HasFactory<\Database\Factories\ArticleFactory> */
     use HasFactory;
+
+    protected $fillable = [
+        "title",
+        "author",
+        "body_text",
+        "body_html",
+        "source",
+        "url",
+    ];
 }
