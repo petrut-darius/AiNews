@@ -15,14 +15,6 @@ class ArticlesController extends Controller
      */
     public function __invoke(Request $request)
     {
-        /*verify subscription
-        if($request->user()->subscribed("default")) {
-            $articles = Article::all();
-        }
-        else{
-            $articles = Article::where("source", "!=", config("articles.premium_source"))->get();
-        }
-        */
         $articles = Article::all();
 
         return Inertia::render("Articles/Index", [
