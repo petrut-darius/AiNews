@@ -27,13 +27,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
-    Route::get("/premium", [CheckOutController::class, "index"])->name("checkout.index");
-    Route::post("/checkout", [CheckOutController::class, "store"])->name("checkout.store");
 });
 
 
-Route::post('/webhooks/stripe', [WebhookController::class, 'handleWebhook'])
-    ->withoutMiddleware(['web', 'auth']);
 
 require __DIR__.'/auth.php';

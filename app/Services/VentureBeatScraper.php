@@ -39,13 +39,15 @@ class VentureBeatScraper implements ScraperInterface
 
         foreach($linkNodes as $key => $linkNode) {
             $linkNodeCrawler = new Crawler($linkNode);
-            $href = $linkNodeCrawler->attr("href");
+            $href = $linkNodeCrawler->text();
 
             $articleUrl = Str::startsWith($href, "http") ? $href : self::BASE_URL . $href;
 
             if(!Str::contains($articleUrl, self::BASE_URL)) {
                 continue;
             }
+
+//            dd($articleUrl);
 
             $articleResponse = $this->makeRequest($articleUrl);
 
@@ -75,7 +77,6 @@ class VentureBeatScraper implements ScraperInterface
         }
 
         return $results;
-
     }
 
     private function makeRequest(string $url):Response {
@@ -85,8 +86,6 @@ class VentureBeatScraper implements ScraperInterface
             "Accept-Language" => "en-US,en;q=0.9",
             "Connection" => "keep-alive",
         ])->get($url);
-
-        dd($response->status(), $response->body());
 
         if(!$response->successful()) {
             throw new \RuntimeException("Failed to fetch the data from the requested URL: $url");

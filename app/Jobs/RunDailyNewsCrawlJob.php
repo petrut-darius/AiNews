@@ -14,21 +14,23 @@ class RunDailyNewsCrawlJob implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(private InsertNewsInterface $interface)
+    public function __construct()
     {
     }
 
     /**
      * Execute the job.
      */
-    public function handle(): void
+    public function handle(InsertNewsInterface $interface): void
     {
-        $this->interface->execute();
+        $interface->execute();
 
+        /*
         User::newsletter()->chunk(500, function($users) {
             foreach($users as $user) {
                 SendNewsletterMailJob::dispatch($user);
             }
         });
+        */
     }
 }
