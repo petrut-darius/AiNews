@@ -63,15 +63,15 @@ class InfoQScraper implements ScraperInterface
                 $articlePage->waitForSelector(".article__data");
 
                 $data = $articlePage->evaluate(JsFunction::createWithBody("
-                    const articleTitle = document.querySelector('div.article__heading > h1');
+                    const articleTitle = document.querySelector('div.article__heading > div > h1');
                     const articleAuthor = document.querySelector('span.author__name > a');
-                    const articleBody = document.querySelector('div.article__data');
+                    const articleBody = document.querySelectorAll('div.article__data > p');
 
                     return {
                         title: articleTitle ? articleTitle.innerText.replace(/\s+/g, ' ').trim() : null,
                         author: articleAuthor ? articleAuthor.innerText.replace(/\s+/g, ' ').trim() : null,
-                        bodyText: articleBody ? articleBody.innerText.replace(/\s+/g, ' ').trim() : null,
-                        bodyHtml: articleBody ? articleBody.innerHTML.trim() : null
+                        bodyText: articleBody.length ? Array.from(articleBody).map(p => p.innerText.replace(/\s+/g, ' ').trim()).join(' ') : null,
+                        bodyHtml: articleBody.length ? Array.from(articleBody).map(p => p.outerHTML).join('') : null
                     }
                 "));
 

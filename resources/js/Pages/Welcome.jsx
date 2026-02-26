@@ -18,7 +18,7 @@ export default function Welcome(props) {
             </div>
             <hr />
             <div className='font-bold text-2xl sm:text-4xl lg:text-6xl my-6'>
-                <p>We present you the news in the Ai world, you can see the latest news here <Link href={route("login")} className='text-retro-orange hover:text-retro-yellow hover:underline hover:decoration-retro-yellow'>articles</Link>.</p>
+                <p>We present you the news in the Ai world, you can see the latest news here <Link href={route("articles.index")} className='text-retro-orange hover:text-retro-yellow hover:underline hover:decoration-retro-yellow'>articles</Link>.</p>
             </div>
             <hr />
             <div className='font-bold text-xl sm:text-2xl lg:text-4xl my-6'>

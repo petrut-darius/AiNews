@@ -1,14 +1,10 @@
 <?php
 
 use App\Http\Controllers\ArticlesController;
-use App\Http\Controllers\CheckOutController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-use Laravel\Cashier\Cashier;
-use Laravel\Cashier\Http\Controllers\WebhookController;
-use Psy\ManualUpdater\Checker;
 
 Route::get('/', function () {
     $layout = (Auth::check() ? "auth" : "guest");
@@ -19,7 +15,7 @@ Route::get('/', function () {
         "layout" => $layout,
         "appName" => config("app.name"),
     ]);
-})->name("home");
+})->name("home");//pt ca asta era dashboard da l-am schimbat, se rezorva lejer
 
 Route::get("/articles", ArticlesController::class)->name("articles.index");
 

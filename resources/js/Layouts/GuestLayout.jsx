@@ -9,9 +9,10 @@ export default function GuestLayout({ children }) {
                 <div className='py-12'>
                     <h1 className='text-center text-7xl text-white'>AiNews</h1>
                 </div>
-                <nav className='flex justify-between mx-8 py-2'>
-                    <div>
+                <nav className='flex justify-between mx-8 py-2 gap-2'>
+                    <div className='flex gap-4'>
                         <NavLink href={route("home")} active={route().current("home")}>Home</NavLink>
+                        <NavLink href={route("articles.index")} active={route().current("articles.index")}>Articles</NavLink>
                     </div>
                     <div className='flex gap-4'>
                         <NavLink href={route("login")} active={route().current("login")}>Log In!</NavLink>
@@ -19,7 +20,7 @@ export default function GuestLayout({ children }) {
                     </div>
                 </nav>
             </div>
-            <main className='mx-[15%] my-16'>
+            <main className='mx-[15%] my-20'>
                 {children}
             </main>
             <footer className='text-center bg-retro-purple text-white pt-8 pb-16'>
