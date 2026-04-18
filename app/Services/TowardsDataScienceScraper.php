@@ -70,6 +70,8 @@ class TowardsDataScienceScraper implements ScraperInterface
 
         }
 
+        logger()->notice("towards data scraper");
+
         return $results;
 
     }

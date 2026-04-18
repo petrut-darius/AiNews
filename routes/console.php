@@ -14,3 +14,12 @@ Schedule::command(DeleteOldArticles::class, ["--force"])->dailyAt("9:00");
 
 //Schedule::job(new RunDailyNewsCrawlJob)->dailyAt("9:00");
 Schedule::job(new RunDailyNewsCrawlJob)->everyThirtySeconds();
+
+//one time command to delete articles or to crawl them.
+Artisan::command("deleteOldArticles", function() {
+    $this->call(DeleteOldArticles::class, ["--force"]);
+});
+
+Artisan::command("runDailyNewsCrawlJob", function() {
+    dispatch(new RunDailyNewsCrawlJob);
+});

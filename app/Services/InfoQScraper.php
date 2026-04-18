@@ -93,6 +93,7 @@ class InfoQScraper implements ScraperInterface
         }
 
         $browser->close();
+        logger()->notice("infoq scraper");
         return $results;
     }
 }

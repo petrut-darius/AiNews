@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use BinaryBuilds\CommandRunner\CommandRunnerPlugin;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -18,6 +19,7 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Illuminate\Support\Str;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -27,7 +29,17 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin123')
             ->path('admin123')
-            ->login()
+            ->plugin(CommandRunnerPlugin::make()
+                ->navigationGroup("System")
+                ->navigationLabel("Cmd")
+                ->validateCommand(function (string $attribute, $value, \Closure $fail) {
+                    if(!Str::startsWith($value, "php artisan")) {
+                        $fail("You can only run artisan commands!");
+                    }
+                })
+                //user permissions
+            )
+            ->login(false)
             ->colors([
                 'primary' => Color::Amber,
             ])

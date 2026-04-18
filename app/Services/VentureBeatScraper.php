@@ -47,19 +47,21 @@ class VentureBeatScraper implements ScraperInterface
                 continue;
             }
 
-//            dd($articleUrl);
-
             $articleResponse = $this->makeRequest($articleUrl);
 
             $articleCrawler = new Crawler($articleResponse->body());
 
-            $articleTitleNode = $articleCrawler->filterXPath("//h1[contains(@class, 'text-editorial-headline-070')]")->first();
+            $articleTitleNode = $articleCrawler->filterXPath("//header[contains(@class, 'text-editorial-headline-040')]")->first();
             $articleAuthorNode = $articleCrawler->filterXPath("//address[contains(@class, 'text-editorial-label-020')]")->first();
             $articleBodyNode = $articleCrawler->filterXPath("//div[contains(@class, 'article-body')]")->first();
 
             $html = $articleBodyNode->text();
 
             $text = trim( preg_replace('/\s+/', ' ', strip_tags($html)));
+
+            logger()->notice($articleTitleNode->count());
+            logger()->notice($articleAuthorNode->count());
+            logger()->notice($articleBodyNode->count());
 
             if(!$articleTitleNode->count() || !$articleAuthorNode->count() || !$articleBodyNode->count()) {
                 continue;

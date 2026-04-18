@@ -66,6 +66,8 @@ class SpectrumScraper implements ScraperInterface
             url: $articleUrl,
         );
 
+        logger()->notice("spectrum scraper");
+
         return $results;
     }
 
