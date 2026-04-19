@@ -7,6 +7,8 @@ use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
 use Filament\Support\Enums\Operation;
+use App\ArticlePermissions;
+use App\UserPermissions;
 
 class UserForm
 {
@@ -17,16 +19,17 @@ class UserForm
                 TextInput::make('name')
                     ->required(),
                 CheckboxList::make("permissions")
-                    ->options([
-                        "manage:users" => "Manage Users",
-                        "delete:users" => "Delete Users",
-                        "update:users" => "Update Users",
-                        "create:users" => "Create Users",
-                        "manage:articles" => "Manage Articles",
-                        "delete:articles" => "Delete Articles",
-                        "update:articles" => "Update Articles",
-                        "create:articles" => "Create Articles",
-                    ]),
+                    ->options(
+                        collect(UserPermissions::cases())
+                            ->merge(ArticlePermissions::cases())
+                            ->mapWithKeys(fn($p) => [
+                                $p->value => match(true) {
+                                    $p instanceof UserPermissions => 'Users: ' . $p->name,
+                                    $p instanceof ArticlePermissions => 'Articles: ' . $p->name,
+                                }
+                            ])
+                            ->toArray()
+                    ),
                 TextInput::make('email')
                     ->label('Email address')
                     ->email()

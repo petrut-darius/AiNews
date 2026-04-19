@@ -28,7 +28,7 @@ class User extends Authenticatable implements FilamentUser
     ];
 
     protected $attributes = [
-        "permissions" => "[]",
+        "permissions" => '[]',
     ];
     /**
      * The attributes that should be hidden for serialization.
@@ -60,12 +60,14 @@ class User extends Authenticatable implements FilamentUser
     }
 
     public function hasPermission(UserPermissions $permission) {
-        $userPermissions = $this->permissions;
+        $userPermissions = $this->permissions ?? [];
 
         return in_array($permission->value, $userPermissions);
     }
 
     public function hasAnyPermission(array $permissions) {
+        $userPermissions = $this->permissions ?? [];
+
         $perms = array_map(function($value) {
             if($value instanceof \BackedEnum) {
                 $value = $value->value;
@@ -75,6 +77,6 @@ class User extends Authenticatable implements FilamentUser
         }, $permissions);
 
         //daca nu este niciun element comun al celor doua array-uri sa zica false
-        return !empty(array_intersect($perms, $this->permissions));
+        return !empty(array_intersect($perms, $userPermissions));
     }
 }
