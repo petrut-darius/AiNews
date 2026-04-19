@@ -56,7 +56,7 @@ class User extends Authenticatable implements FilamentUser
 
     //foloseste asta in loc de AdminMiddleware
     public function canAccessPanel(Panel $panel):bool {
-        return $this->hasAnyPermission([UserPermissions::EVERYTHING, UserPermissions::CREATE, UserPermissions::UPDATE, UserPermissions::DELETE]);
+        return !empty($this->permissions);
     }
 
     public function hasPermission(UserPermissions $permission) {
