@@ -10,6 +10,12 @@ Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
 
+Artisan::command("demo:cron", function() {
+    logger()->info("cron job running");
+})->purpose("Check if cron job working");
+
+Schedule::command("demo:cron")->everyFiveSeconds();
+
 Schedule::command(DeleteOldArticles::class, ["--force"])->dailyAt("9:00");
 
 Schedule::job(new RunDailyNewsCrawlJob)->dailyAt("9:00");
