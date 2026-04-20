@@ -38,6 +38,7 @@ class InsertNews implements InsertNewsInterface
                     ]);
                 }
             }
+            logger()->info("saved article to db");
         }
     }
 }

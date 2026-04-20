@@ -53,6 +53,7 @@ class TowardsDataScienceScraper implements ScraperInterface
 
 
             if(!$articleTitleNode->count() || !$articleAuthorNode->count() || !$articleBodyNode->count()) {
+                logger()->error("towards data scraper getting node failed.");
                 continue;
             }
 

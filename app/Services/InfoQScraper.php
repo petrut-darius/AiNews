@@ -1,99 +1,88 @@
 <?php
-
 namespace App\Services;
 
 use App\DTOs\ArticleDataDTO;
 use App\Services\Contracts\ScraperInterface;
-use Nesk\Puphpeteer\Puppeteer;
-use Nesk\Rialto\Data\JsFunction;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
+use Symfony\Component\DomCrawler\Crawler;
+use Illuminate\Http\Client\Response;
 
 class InfoQScraper implements ScraperInterface
 {
     private const URL = "https://www.infoq.com/news/";
-
-    private const BASE_URL = "https://www.infoq.com/";
-
+    private const BASE_URL = "https://www.infoq.com";
     private const SOURCE = "info_q";
 
-    /**
-     * Create a new class instance.
-     */
-    public function __construct()
-    {
-        //
-    }
+    public function scrape(): array {
+        $response = $this->makeRequest(self::URL);
+        $crawler = new Crawler($response->body());
 
-    public function scrape():array {
-        $puppeteer = new Puppeteer();
-        $browser = $puppeteer->launch([
-            "headless" => true,
-            "args" => [
-                "--no-sandbox",
-                "--disable-setuid-sandbox",
-                "--disable-gpu",
-                "--disable-dev-shm-usage"
-            ]
-        ]);
+        $linkNodes = $crawler->filterXPath("//h3[contains(@class, 'card__title')]/a");
 
-        $page = $browser->newPage();
-        $page->goto(self::URL, ["timeout" => 30000, "waitUntil" => "networkidle2"]);
-        $page->waitForSelector("div.items__content ul.cards li h3.card__title > a");
-
-        $articleLinks = $page->evaluate(JsFunction::createWithBody("
-            return Array.from(
-                document.querySelectorAll('div.items__content ul.cards li h3.card__title > a')
-            ).slice(0, 6).map(a => a.href);
-        "));
-
-        $visitedLinks = [];
-        $results = [];
-
-        foreach($articleLinks as $articleLink) {
-            try {
-                if(isset($visitedLinks[$articleLink])) {
-                    continue;
-                }else{
-                    $visitedLinks[$articleLink] = true;
-                }
-
-                $articlePage = $browser->newPage();
-
-                $articlePage->goto($articleLink, ["timeout" => 30000, "waitUntil" => "networkidle2"]);
-
-                $articlePage->waitForSelector(".article__data");
-
-                $data = $articlePage->evaluate(JsFunction::createWithBody("
-                    const articleTitle = document.querySelector('div.article__heading > div > h1');
-                    const articleAuthor = document.querySelector('span.author__name > a');
-                    const articleBody = document.querySelectorAll('div.article__data > p');
-
-                    return {
-                        title: articleTitle ? articleTitle.innerText.replace(/\s+/g, ' ').trim() : null,
-                        author: articleAuthor ? articleAuthor.innerText.replace(/\s+/g, ' ').trim() : null,
-                        bodyText: articleBody.length ? Array.from(articleBody).map(p => p.innerText.replace(/\s+/g, ' ').trim()).join(' ') : null,
-                        bodyHtml: articleBody.length ? Array.from(articleBody).map(p => p.outerHTML).join('') : null
-                    }
-                "));
-
-                $results[] = new ArticleDataDTO(
-                    title: (string) $data["title"],
-                    author: (string) $data["author"],
-                    bodyText: (string) $data["bodyText"],
-                    bodyHtml: (string) $data["bodyHtml"],
-                    source: (string) self::SOURCE,
-                    url: (string) $articleLink
-                );
-
-                $articlePage->close();
-            }catch(\Throwable $e) {
-                echo $e->getMessage() . PHP_EOL;
-                echo $e->getLine() . PHP_EOL;
-                echo $e->getFile() . PHP_EOL;
-            }
+        if ($linkNodes->count() === 0) {
+            throw new \RuntimeException("Failed to extract article links from " . self::URL);
         }
 
-        $browser->close();
+        $results = [];
+        $visited = [];
+        
+        //&$results -> baga variabila efectiva, adica tot ce se intampla in acel loop sa se fie si la variabila originala, adica dupa metamorfoza sa fie si in afara loopului
+        $linkNodes->slice(0, 6)->each(function (Crawler $node) use (&$results, &$visited) {
+            $href = $node->attr("href");
+            $articleUrl = Str::startsWith($href, "http") ? $href : self::BASE_URL . $href;
+
+            if (isset($visited[$articleUrl])) return;
+            $visited[$articleUrl] = true;
+
+            try {
+                $articleResponse = $this->makeRequest($articleUrl);
+
+                $articleCrawler = new Crawler($articleResponse->body());
+
+                $titleNode = $articleCrawler->filterXPath("//div[contains(@class, 'article__heading')]//h1")->first();
+                $authorNode = $articleCrawler->filterXPath("//span[contains(@class, 'author__name')]/a")->first();
+                $bodyNodes = $articleCrawler->filterXPath("//div[contains(@class, 'article__data')]/p");
+
+                if (!$titleNode->count() || !$authorNode->count() || !$bodyNodes->count()) {
+                    return;
+                }
+
+                $html = $bodyNodes->each(fn(Crawler $p) => $p->outerHtml());//returneaza un array de $p->outerHTML (each -> nu e exact ca functia din PHP, ca e de la obiectu Crawler)
+                $html = implode('', $html);
+                $text = trim(preg_replace('/\s+/', ' ', strip_tags($html)));
+
+                $results[] = new ArticleDataDTO(
+                    title: $titleNode->text(),
+                    author: $authorNode->text(),
+                    bodyText: $text,
+                    bodyHtml: $html,
+                    source: self::SOURCE,
+                    url: $articleUrl,
+                );
+            } catch (\Throwable $e) {
+                logger()->error("InfoQ article failed", [
+                    "url" => $articleUrl,
+                    "error" => $e->getMessage()
+                ]);
+            }
+        });
+
         logger()->notice("infoq scraper");
         return $results;
+    }
+
+    private function makeRequest(string $url): Response{
+        $response = Http::withHeaders([
+            "User-Agent" => "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36",
+            "Accept" => "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+            "Accept-Language" => "en-US,en;q=0.9",
+        ])->get($url);
+
+        if (!$response->successful()) {
+            throw new \RuntimeException("Failed to fetch: $url");
+        }
+
+        return $response;
     }
 }

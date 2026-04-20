@@ -59,11 +59,16 @@ class VentureBeatScraper implements ScraperInterface
 
             $text = trim( preg_replace('/\s+/', ' ', strip_tags($html)));
 
+            /*
             logger()->notice($articleTitleNode->count());
             logger()->notice($articleAuthorNode->count());
             logger()->notice($articleBodyNode->count());
+            */
+
+            logger()->notice("venture beat scraper");
 
             if(!$articleTitleNode->count() || !$articleAuthorNode->count() || !$articleBodyNode->count()) {
+                logger()->error("venture beat scraper getting node failed.");
                 continue;
             }
 

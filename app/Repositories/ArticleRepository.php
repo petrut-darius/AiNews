@@ -9,6 +9,7 @@ class ArticleRepository extends BaseRepository
 {
     public function __construct(private Article $article)
     {
+        parent::__construct($article);
     }
 
     public function saveFromCrawler(ArticleDataDTO $dto):Article {

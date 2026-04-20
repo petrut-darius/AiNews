@@ -16,9 +16,9 @@ Artisan::command("demo:cron", function() {
 
 Schedule::command("demo:cron")->everyFiveSeconds();
 
-Schedule::command(DeleteOldArticles::class, ["--force"])->dailyAt("9:00");
+Schedule::command(DeleteOldArticles::class, ["--force"])->dailyAt("10:00");
 
-Schedule::job(new RunDailyNewsCrawlJob)->dailyAt("9:00");
+Schedule::job(new RunDailyNewsCrawlJob)->dailyAt("10:00");
 
 //one time command to delete articles or to crawl them.
 Artisan::command("deleteOldArticles", function() {

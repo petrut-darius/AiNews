@@ -23,7 +23,7 @@ class RunDailyNewsCrawlJob implements ShouldQueue
      */
     public function handle(InsertNewsInterface $interface): void
     {
-        logger()->error("got to the job");
+        logger()->info("got to the job");
         $interface->execute();
 
         /*
