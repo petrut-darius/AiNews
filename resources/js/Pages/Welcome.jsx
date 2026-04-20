@@ -22,7 +22,7 @@ export default function Welcome({ articles }) {
                                 </span>
                             </div>
 
-                            <h2 className="text-3xl md:text-5xl font-black text-gray-900 leading-tight">
+                            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-gray-900 leading-tight">
                                 <a href={featuredArticle.url} target="_blank" rel="noopener noreferrer" className="hover:text-retro-purple transition-colors decoration-retro-yellow decoration-4 hover:underline">
                                     {featuredArticle.title}
                                 </a>
@@ -70,8 +70,8 @@ export default function Welcome({ articles }) {
             {/* Recent Articles Grid */}
             {recentArticles.length > 0 && (
                 <section>
-                    <div className="flex items-center justify-between mb-8 pb-4 border-b-2 border-gray-100">
-                        <h3 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
+                    <div className="flex flex-col sm:flex-row items-center justify-between mb-8 pb-4 border-b-2 border-gray-100 gap-4">
+                        <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 flex items-center gap-3">
                             <span className="w-3 h-8 bg-retro-yellow rounded-full"></span>
                             Latest News
                         </h3>

@@ -12,8 +12,7 @@ Artisan::command('inspire', function () {
 
 Schedule::command(DeleteOldArticles::class, ["--force"])->dailyAt("9:00");
 
-//Schedule::job(new RunDailyNewsCrawlJob)->dailyAt("9:00");
-Schedule::job(new RunDailyNewsCrawlJob)->everyThirtySeconds();
+Schedule::job(new RunDailyNewsCrawlJob)->dailyAt("9:00");
 
 //one time command to delete articles or to crawl them.
 Artisan::command("deleteOldArticles", function() {

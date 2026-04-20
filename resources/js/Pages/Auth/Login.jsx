@@ -26,9 +26,9 @@ export default function Login({ status, canResetPassword }) {
             <Head title="Log in" />
 
             <div className="max-w-md mx-auto">
-                <div className="bg-white border-4 border-retro-purple p-8 rounded-2xl shadow-[12px_12px_0px_0px_rgba(77,43,140,1)]">
+                <div className="bg-white border-4 border-retro-purple p-6 md:p-8 rounded-2xl shadow-[6px_6px_0px_0px_rgba(77,43,140,1)] md:shadow-[12px_12px_0px_0px_rgba(77,43,140,1)]">
                     <div className="mb-8 text-center">
-                        <h2 className="text-4xl font-black text-retro-purple uppercase tracking-tighter">Welcome Back</h2>
+                        <h2 className="text-3xl md:text-4xl font-black text-retro-purple uppercase tracking-tighter">Welcome Back</h2>
                         <p className="text-gray-500 font-bold mt-2">Log in to your account</p>
                     </div>
 
@@ -46,7 +46,7 @@ export default function Login({ status, canResetPassword }) {
                                 type="email"
                                 name="email"
                                 value={data.email}
-                                className="mt-1 block w-full text-lg p-3"
+                                className="mt-1 block w-full text-base md:text-lg p-3"
                                 autoComplete="username"
                                 isFocused={true}
                                 onChange={(e) => setData('email', e.target.value)}
@@ -61,14 +61,14 @@ export default function Login({ status, canResetPassword }) {
                                 type="password"
                                 name="password"
                                 value={data.password}
-                                className="mt-1 block w-full text-lg p-3"
+                                className="mt-1 block w-full text-base md:text-lg p-3"
                                 autoComplete="current-password"
                                 onChange={(e) => setData('password', e.target.value)}
                             />
                             <InputError message={errors.password} className="mt-2 font-bold" />
                         </div>
 
-                        <div className="flex items-center justify-between">
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                             <label className="flex items-center group cursor-pointer">
                                 <Checkbox
                                     name="remember"

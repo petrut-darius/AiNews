@@ -10,10 +10,10 @@ export default function Index({ auth, previewArticles, articles }) {
             <Head title="Exclusive Articles" />
             
             <header className="text-center space-y-4">
-                <h1 className="text-5xl md:text-7xl font-black text-retro-purple uppercase tracking-tighter italic">
+                <h1 className="text-4xl sm:text-5xl md:text-7xl font-black text-retro-purple uppercase tracking-tighter italic">
                     The <span className="text-retro-orange underline decoration-retro-yellow decoration-8">Archive</span>
                 </h1>
-                <p className="text-gray-500 font-bold text-xl">Deep dives into the world of Artificial Intelligence.</p>
+                <p className="text-gray-500 font-bold text-lg md:text-xl">Deep dives into the world of Artificial Intelligence.</p>
             </header>
 
             {/* Preview Articles (Visible to everyone) */}

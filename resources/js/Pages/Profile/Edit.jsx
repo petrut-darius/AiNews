@@ -9,9 +9,9 @@ export default function Edit({ mustVerifyEmail, status }) {
         <AuthenticatedLayout>
             <Head title="Profile" />
 
-            <div className="py-12 space-y-12">
-                <div className="max-w-3xl mx-auto space-y-12">
-                    <div className="bg-white border-4 border-retro-purple p-8 rounded-2xl shadow-[12px_12px_0px_0px_rgba(77,43,140,1)]">
+            <div className="py-6 md:py-12 space-y-8 md:space-y-12">
+                <div className="max-w-3xl mx-auto space-y-8 md:space-y-12">
+                    <div className="bg-white border-4 border-retro-purple p-6 md:p-8 rounded-2xl shadow-[6px_6px_0px_0px_rgba(77,43,140,1)] md:shadow-[12px_12px_0px_0px_rgba(77,43,140,1)]">
                         <UpdateProfileInformationForm
                             mustVerifyEmail={mustVerifyEmail}
                             status={status}
@@ -19,11 +19,11 @@ export default function Edit({ mustVerifyEmail, status }) {
                         />
                     </div>
 
-                    <div className="bg-white border-4 border-retro-orange p-8 rounded-2xl shadow-[12px_12px_0px_0px_rgba(238,167,39,1)]">
+                    <div className="bg-white border-4 border-retro-orange p-6 md:p-8 rounded-2xl shadow-[6px_6px_0px_0px_rgba(238,167,39,1)] md:shadow-[12px_12px_0px_0px_rgba(238,167,39,1)]">
                         <UpdatePasswordForm className="w-full" />
                     </div>
 
-                    <div className="bg-white border-4 border-red-500 p-8 rounded-2xl shadow-[12px_12px_0px_0px_rgba(239,68,68,1)]">
+                    <div className="bg-white border-4 border-red-500 p-6 md:p-8 rounded-2xl shadow-[6px_6px_0px_0px_rgba(239,68,68,1)] md:shadow-[12px_12px_0px_0px_rgba(239,68,68,1)]">
                         <DeleteUserForm className="w-full" />
                     </div>
                 </div>
